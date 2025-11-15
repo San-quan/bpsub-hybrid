@@ -17,7 +17,7 @@ id = "05950f0e52b5410e89a3c938d512884a"
 [vars]
 TOKEN = "sanbao"
 GUEST = "CN"
-SUBNAME = "三宝专属订阅 By:JackSan"
+SUBNAME = "三宝订阅系统"
 SUBCONFIG = "https://raw.githubusercontent.com/San-quan/bpsub-hybrid/main/clash_config_optimized.ini"
 TGTOKEN = "7794095577:AAGKgzq1kEY-HuJPufQMeelrqqlf8-eonW8"
 TGID = "6919196077"

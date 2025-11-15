@@ -113,9 +113,29 @@ export default {
   <div class="container py-5">
     <div class="text-center mb-5">
       <h1 class="display-4 neon-text fw-bold">
-        <i class="bi bi-stars"></i> ${SUBNAME}
+        <i class="bi bi-stars"></i> ${SUBNAME.replace('By:JackSan', '').trim()}
       </h1>
       <p class="text-light opacity-75">Hong Kong Optimized · 香港本地优化 · 低延迟直连</p>
+    </div>
+    <!-- IP对比卡片 -->
+    <div class="glass-card p-4 mb-4">
+      <div class="row text-center">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <h6 class="text-light mb-2"><i class="bi bi-house"></i> 本地IP</h6>
+          <code id="localIP" class="bg-dark text-warning p-2 rounded">检测中...</code>
+          <div id="localLocation" class="text-light small mt-1 opacity-75"></div>
+        </div>
+        <div class="col-md-6">
+          <h6 class="text-light mb-2"><i class="bi bi-shield-check"></i> 代理IP</h6>
+          <code id="proxyIP" class="bg-dark text-success p-2 rounded">检测中...</code>
+          <div id="proxyLocation" class="text-light small mt-1 opacity-75"></div>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-outline-info btn-sm" onclick="refreshIP()">
+          <i class="bi bi-arrow-clockwise"></i> 刷新IP
+        </button>
+      </div>
     </div>
     <!-- 订阅卡片 -->
     <div class="glass-card p-4 mb-4">
@@ -180,6 +200,46 @@ export default {
     
     textarea.addEventListener('input', updateCount);
     updateCount();
+    
+    // IP检测
+    async function checkIP() {
+      try {
+        // 检测本地IP (Cloudflare)
+        const localResp = await fetch('https://1.1.1.1/cdn-cgi/trace');
+        const localText = await localResp.text();
+        const localIP = localText.match(/ip=([^\\n]+)/)?.[1] || '未知';
+        const localLoc = localText.match(/loc=([^\\n]+)/)?.[1] || '';
+        document.getElementById('localIP').textContent = localIP;
+        document.getElementById('localLocation').textContent = localLoc ? '\\uD83D\\uDCCD ' + localLoc : '';
+        
+        // 检测代理IP (通过ipapi.co)
+        try {
+          const proxyResp = await fetch('https://ipapi.co/json/');
+          const proxyData = await proxyResp.json();
+          document.getElementById('proxyIP').textContent = proxyData.ip || '未知';
+          const city = proxyData.city || '';
+          const country = proxyData.country_name || '';
+          const org = proxyData.org || '';
+          document.getElementById('proxyLocation').textContent = 
+            '\\uD83D\\uDCCD ' + city + ' ' + country + ' ' + org;
+        } catch (e) {
+          document.getElementById('proxyIP').textContent = localIP;
+          document.getElementById('proxyLocation').textContent = '(无代理或检测失败)';
+        }
+      } catch (e) {
+        document.getElementById('localIP').textContent = '检测失败';
+        document.getElementById('proxyIP').textContent = '检测失败';
+      }
+    }
+    
+    function refreshIP() {
+      document.getElementById('localIP').textContent = '检测中...';
+      document.getElementById('proxyIP').textContent = '检测中...';
+      checkIP();
+    }
+    
+    // 页面加载时检测IP
+    checkIP();
     
     // 保存
     async function save() {
