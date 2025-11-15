@@ -117,9 +117,9 @@ export default {
       </h1>
       <p class="text-light opacity-75">Hong Kong Optimized · 香港本地优化 · 低延迟直连</p>
     </div>
-    <!-- IP对比卡片 -->
+    <!-- IP对比与网速检测卡片 -->
     <div class="glass-card p-4 mb-4">
-      <div class="row text-center">
+      <div class="row text-center mb-3">
         <div class="col-md-6 mb-3 mb-md-0">
           <h6 class="text-light mb-2"><i class="bi bi-house"></i> 本地IP</h6>
           <code id="localIP" class="bg-dark text-warning p-2 rounded">检测中...</code>
@@ -131,9 +131,22 @@ export default {
           <div id="proxyLocation" class="text-light small mt-1 opacity-75"></div>
         </div>
       </div>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h6 class="text-light mb-2"><i class="bi bi-speedometer2"></i> 网速测试</h6>
+          <div id="speedResult" class="text-info">
+            <span class="latency-good">下载: -- Mbps</span> | 
+            <span class="latency-ok">上传: -- Mbps</span> | 
+            <span class="latency-bad">延迟: -- ms</span>
+          </div>
+        </div>
+      </div>
       <div class="text-center mt-3">
-        <button class="btn btn-outline-info btn-sm" onclick="refreshIP()">
+        <button class="btn btn-outline-info btn-sm me-2" onclick="refreshIP()">
           <i class="bi bi-arrow-clockwise"></i> 刷新IP
+        </button>
+        <button class="btn btn-outline-warning btn-sm" onclick="testSpeed()">
+          <i class="bi bi-lightning-charge"></i> 测速
         </button>
       </div>
     </div>
@@ -203,32 +216,86 @@ export default {
     
     // IP检测
     async function checkIP() {
+      document.getElementById('localIP').textContent = '检测中...';
+      document.getElementById('proxyIP').textContent = '检测中...';
+      
       try {
-        // 检测本地IP (Cloudflare)
+        // 检测本地IP
         const localResp = await fetch('https://1.1.1.1/cdn-cgi/trace');
         const localText = await localResp.text();
         const localIP = localText.match(/ip=([^\\n]+)/)?.[1] || '未知';
         const localLoc = localText.match(/loc=([^\\n]+)/)?.[1] || '';
-        document.getElementById('localIP').textContent = localIP;
-        document.getElementById('localLocation').textContent = localLoc ? '\\uD83D\\uDCCD ' + localLoc : '';
+        const localColo = localText.match(/colo=([^\\n]+)/)?.[1] || '';
         
-        // 检测代理IP (通过ipapi.co)
-        try {
-          const proxyResp = await fetch('https://ipapi.co/json/');
-          const proxyData = await proxyResp.json();
-          document.getElementById('proxyIP').textContent = proxyData.ip || '未知';
-          const city = proxyData.city || '';
-          const country = proxyData.country_name || '';
-          const org = proxyData.org || '';
-          document.getElementById('proxyLocation').textContent = 
-            '\\uD83D\\uDCCD ' + city + ' ' + country + ' ' + org;
-        } catch (e) {
-          document.getElementById('proxyIP').textContent = localIP;
-          document.getElementById('proxyLocation').textContent = '(无代理或检测失败)';
-        }
+        document.getElementById('localIP').textContent = localIP;
+        document.getElementById('localLocation').textContent = 
+          localLoc ? '\\uD83D\\uDCCD ' + localLoc + (localColo ? ' (' + localColo + ')' : '') : '';
+        
+        // 检测代理IP
+        const proxyIP = localIP;
+        document.getElementById('proxyIP').textContent = proxyIP;
+        document.getElementById('proxyLocation').textContent = 
+          localLoc ? '\\uD83D\\uDCCD ' + localLoc + (localColo ? ' (' + localColo + ')' : '') : '';
+        
+        // 异步获取详细位置(ipapi.co)
+        setTimeout(() => {
+          fetch('https://ipapi.co/json/')
+            .then(r => r.json())
+            .then(data => {
+              if (data.ip) {
+                document.getElementById('proxyIP').textContent = data.ip;
+                const loc = [data.city, data.region, data.country_name, data.org].filter(x => x).join(' ');
+                if (loc) {
+                  document.getElementById('proxyLocation').textContent = '\\uD83D\\uDCCD ' + loc;
+                }
+              }
+            })
+            .catch(err => {
+              console.log('详细位置获取失败(使用基础信息):', err);
+            });
+        }, 100);
+        
       } catch (e) {
         document.getElementById('localIP').textContent = '检测失败';
         document.getElementById('proxyIP').textContent = '检测失败';
+        console.error('IP检测错误:', e);
+      }
+    }
+    
+    // 网速测试
+    async function testSpeed() {
+      const resultEl = document.getElementById('speedResult');
+      resultEl.innerHTML = '<span class="text-info">测速中...</span>';
+      
+      try {
+        // 测试下载速度 (使用Cloudflare测试文件)
+        const downloadStart = Date.now();
+        const downloadResp = await fetch('https://speed.cloudflare.com/__down?bytes=5000000'); // 5MB
+        const downloadBlob = await downloadResp.blob();
+        const downloadTime = (Date.now() - downloadStart) / 1000;
+        const downloadSpeed = ((5 * 8) / downloadTime).toFixed(2); // Mbps
+        
+        // 测试延迟
+        const pingStart = Date.now();
+        await fetch('https://1.1.1.1/cdn-cgi/trace');
+        const ping = Date.now() - pingStart;
+        
+        // 测试上传速度 (模拟小文件上传)
+        const uploadStart = Date.now();
+        const uploadData = new Blob([new ArrayBuffer(1000000)]); // 1MB
+        await fetch('https://speed.cloudflare.com/__up', { 
+          method: 'POST', 
+          body: uploadData 
+        }).catch(() => {});
+        const uploadTime = (Date.now() - uploadStart) / 1000;
+        const uploadSpeed = ((1 * 8) / uploadTime).toFixed(2); // Mbps
+        
+        resultEl.innerHTML = 
+          '<span class="latency-good">下载: ' + downloadSpeed + ' Mbps</span> | ' +
+          '<span class="latency-ok">上传: ' + uploadSpeed + ' Mbps</span> | ' +
+          '<span class="latency-bad">延迟: ' + ping + ' ms</span>';
+      } catch (e) {
+        resultEl.innerHTML = '<span class="text-danger">测速失败，请检查网络连接</span>';
       }
     }
     
