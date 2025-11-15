@@ -1,0 +1,197 @@
+# Telegram Bot Token (从 @BotFather 获取)
+bot_token: '8584335653:AAFxKjEZBD-w98XJG26TmxaliC-Yb5'
+
+# 管理员配置
+owner_id: '6919196077'  # 你的 Telegram 用户 ID
+staffchat_id: '-10034038523'  # 客服组群 ID，用 /id 命令获取
+staffchat_type: 'telegram'
+staffchat_parse_mode: 'Markdown'
+
+# MongoDB 配置
+mongodb_uri: 'mongodb://mongodb:27017/support'
+
+# 消息格式
+parse_mode: 'Markdown'
+
+# 防刷配置
+spam_time: 60000  # 60秒内
+spam_cant_msg: 5  # 不能超过5条消息
+
+# 功能开关
+allow_private: false       # 是否允许客服私聊用户
+direct_reply: false        # 是否使用直接回复按钮
+auto_close_tickets: false  # 是否自动关闭工单
+anonymous_tickets: false   # 是否匿名工单（false = 必须显示用户名）
+anonymous_replies: false   # 是否匿名回复
+show_auto_replied: true    # 是否显示自动回复标记（AI 回复会标注）
+show_user_ticket: true     # 是否向用户显示工单号（便于追踪）
+clean_replies: false       # 是否使用简洁回复（不带称呼）
+pass_start: false          # 是否传递 start 参数
+dev_mode: false            # 开发模式
+
+# Signal 支持（可选）
+signal_enabled: false
+signal_number: ''
+signal_host: 'signal-cli:40153'
+
+# Web 服务器（可选）
+web_server: false
+web_server_port: 3000
+web_server_ssl_cert: ''
+web_server_ssl_key: ''
+
+# LLM AI 助手（可选）
+use_llm: false
+llm_api_key: 'YOUR_OPENAI_API_KEY'
+llm_base_url: 'https://api.openai.com/v1'
+llm_model: 'gpt-4o-mini'
+llm_knowledge: |
+  你是「优质三方会员服务应用」官方 AI 客服小安。
+  用**简体中文**与用户沟通，语气亲切、专业、简洁。
+  每条回复末尾自动附加【客服记录表】。
+  收集信息后填写【会员注册表】或【退款申请表】。
+  不确定时回复：@管理员 请确认。
+  
+  === 服务介绍 ===
+  我们提供优质的三方会员服务，包括：
+  - 会员注册与管理
+  - 退款申请处理
+  - 账号问题支持
+  - 使用咨询服务
+  
+  === 常见问题 ===
+  Q: 如何注册会员？
+  A: 请提供您的基本信息（邮箱/手机），我会帮您填写注册表单。
+  
+  Q: 退款流程是什么？
+  A: 请提供订单号和退款原因，我会协助您提交退款申请。
+  
+  Q: 工作时间是多少？
+  A: 我们提供 24/7 在线服务，AI 客服全天候响应，人工客服工作日 9:00-18:00。
+
+# 自动回复配置
+autoreply_confirmation: true
+autoreply:
+  - question: '你好|您好|hi|hello'
+    answer: '您好！我是 AI 客服小安 🤖 请问有什么可以帮助您的？'
+  - question: '注册|会员|加入'
+    answer: '欢迎注册会员！请告诉我您的邮箱或手机号，我会帮您完成注册流程。'
+  - question: '退款|退钱|取消订单'
+    answer: '我会协助您处理退款申请。请提供您的订单号，以及退款原因，我会为您记录。'
+  - question: '价格|费用|多少钱'
+    answer: '关于价格详情，请@管理员 获取最新报价信息。'
+  - question: '营业时间|工作时间|客服时间'
+    answer: 'AI 客服（我）24/7 在线！人工客服工作日 9:00-18:00。'
+  - question: '人工|真人|转人工'
+    answer: '已通知管理员，人工客服会尽快为您服务！'
+
+# 语言配置
+language:
+  # 通用
+  dear: '尊敬的'
+  regards: '此致\n敬礼'
+  regardsGroup: '客服团队'
+  automatedReplyAuthor: '自动回复机器人'
+  automatedReply: '这是一条自动回复'
+  automatedReplySent: '已发送自动回复'
+  ticket: '工单'
+  from: '来自:'
+  language: '语言:'
+  closed: '已关闭'
+  
+  # 命令相关
+  startCommandText: |
+    👋 您好！我是「优质三方会员服务应用」官方 AI 客服小安
+    
+    ✨ 我可以帮您：
+    🔹 会员注册与咨询
+    🔹 退款申请处理
+    🔹 账号问题支持
+    🔹 使用指导服务
+    
+    💬 请直接发送您的问题，我会立即回复！
+    如需人工客服，管理员会及时介入。
+    
+    📌 可用命令:
+    /help - 查看帮助
+    /faq - 常见问题
+    /id - 查看您的 ID
+    
+  helpCommandText: |
+    📖 **用户帮助**
+    
+    直接发送消息即可创建工单
+    客服人员会尽快回复您
+    
+    🔸 /start - 开始使用
+    🔸 /help - 帮助信息
+    🔸 /faq - 常见问题
+    🔸 /id - 查看ID
+    
+  helpCommandStaffText: |
+    📖 **客服帮助**
+    
+    回复用户消息即可回复工单
+    
+    🔸 /open - 查看未处理工单
+    🔸 /close - 关闭工单
+    🔸 /reopen - 重开工单
+    🔸 /ban - 封禁用户
+    🔸 /unban - 解封用户
+    🔸 /clear - 关闭所有工单
+    🔸 /id - 查看ID
+    
+  faqCommandText: |
+    ❓ **常见问题**
+    
+    **Q: 如何注册会员？**
+    A: 告诉我您的邮箱/手机号，我会帮您填写注册表单
+    
+    **Q: 如何申请退款？**
+    A: 提供订单号和退款原因，我会协助提交申请
+    
+    **Q: 工作时间是多少？**
+    A: AI 客服 24/7 在线，人工客服工作日 9:00-18:00
+    
+    **Q: 多久会收到回复？**
+    A: AI 客服即时回复，复杂问题人工客服 1-2 小时内处理
+    
+    **Q: 如何联系人工客服？**
+    A: 发送消息后，如需人工介入，管理员会主动联系您
+    
+  # 工单相关
+  confirmationMessage: '✅ 您的消息已收到！客服人员会尽快回复您。'
+  ticketClosed: '您的工单已关闭。如有其他问题，请随时联系我们。'
+  ticketClosedError: '❌ 工单未找到或已关闭'
+  openTickets: '📋 **未处理工单**'
+  
+  # 操作相关
+  replyPrivate: '💬 回复此用户'
+  msg_sent: '✅ 消息已发送'
+  file_sent: '📎 文件已发送给'
+  textFirst: '⚠️ 请先发送文本消息创建工单'
+  
+  # 其他
+  services: '📚 服务列表'
+  links: '🔗 快捷链接'
+  back: '⬅️ 返回'
+  prvChatOnly: '⚠️ 此命令仅在私聊中可用'
+  blockedSpam: '⚠️ 您发送消息过快，请稍候再试'
+
+# 分类配置（可选）
+categories: []
+  # 示例分类配置:
+  # - name: '技术支持'
+  #   msg: '请描述您遇到的技术问题'
+  #   tag: 'TECH'
+  #   group_id: 'TECH_SUPPORT_GROUP_ID'
+  #   subgroups:
+  #     - name: '账号问题'
+  #       group_id: 'ACCOUNT_GROUP_ID'
+  #     - name: '支付问题'
+  #       group_id: 'PAYMENT_GROUP_ID'
+  # - name: '商务合作'
+  #   msg: '请说明您的合作意向'
+  #   tag: 'BUSINESS'
+  #   group_id: 'BUSINESS_GROUP_ID'
+  #   subgroups: []

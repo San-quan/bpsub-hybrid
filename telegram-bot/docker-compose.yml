@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: support-bot-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: support
+    networks:
+      - bot-network
+
+  bot:
+    image: bostrot/telegram-support-bot:latest
+    container_name: telegram-support-bot
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    volumes:
+      - ./config:/bot/config
+    environment:
+      NODE_ENV: production
+    networks:
+      - bot-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  bot-network:
+    driver: bridge

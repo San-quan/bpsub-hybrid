@@ -1,0 +1,10 @@
+node_modules/
+config/config.yaml
+config/debug.log
+config/support.db
+config/support.old.db
+.env
+dist/
+build/
+*.log
+.DS_Store
