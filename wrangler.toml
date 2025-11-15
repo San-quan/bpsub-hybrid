@@ -1,0 +1,32 @@
+name = "sanbao-sub"
+main = "_worker.js"
+compatibility_date = "2025-11-15"
+workers_dev = true
+account_id = "0adc8c04c6071f1761be9b5b91a422ba"
+
+# 主 KV：存储主节点
+[[kv_namespaces]]
+binding = "KV_MAIN"
+id = "6cb59bc72820462fb03efea7a572c6f8"
+
+# 访客 KV：纯文本 GUEST CN
+[[kv_namespaces]]
+binding = "KV_GUEST"
+id = "05950f0e52b5410e89a3c938d512884a"
+
+[vars]
+TOKEN = "sanbao"
+GUEST = "CN"
+SUBNAME = "三宝专属订阅 By:JackSan"
+SUBCONFIG = "https://raw.githubusercontent.com/San-quan/bpsub-hybrid/main/clash_config_optimized.ini"
+TGTOKEN = "7794095577:AAGKgzq1kEY-HuJPufQMeelrqqlf8-eonW8"
+TGID = "6919196077"
+
+# 自定义域名
+[[routes]]
+pattern = "baobao.snk567.cc/*"
+zone_name = "snk567.cc"
+
+# 每天上午8点（UTC时间0点 = 香港时间8点）定时通知
+[triggers]
+crons = ["0 0 * * *"]
