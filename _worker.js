@@ -373,7 +373,7 @@ export default {
             actualCount++;
           } else if (/^https?:\/\//i.test(t)) {
             try {
-              const r = await fetch(t, { signal: AbortSignal.timeout(5000) });
+              const r = await fetch(t, { signal: AbortSignal.timeout(30000) });
               if (r.ok) {
                 const txt = await r.text();
                 const decoded = txt.includes('://') ? txt : (txt.trim().length > 0 && btoa(atob(txt.trim())) === txt.trim() ? atob(txt.trim()) : txt);
@@ -413,7 +413,7 @@ export default {
           merged.push(t);
         } else if (/^https?:\/\//i.test(t)) {
           try {
-            const r = await fetch(t);
+            const r = await fetch(t, { signal: AbortSignal.timeout(30000) });
             if (r.ok) {
               const txt = await r.text();
               const decoded = txt.includes('://') ? txt : (txt.trim().length > 0 && btoa(atob(txt.trim())) === txt.trim() ? atob(txt.trim()) : txt);
@@ -457,7 +457,7 @@ export default {
             });
             const fetchUrl = `${converter}?${params.toString()}`;
             const resp = await fetch(fetchUrl, { 
-              signal: AbortSignal.timeout(15000),
+              signal: AbortSignal.timeout(45000),
               headers: {
                 'User-Agent': 'clash'
               }
@@ -511,7 +511,7 @@ export default {
         if (/^https?:\/\//i.test(t)) {
           try {
             const r = await fetch(t, { 
-              signal: AbortSignal.timeout(10000),
+              signal: AbortSignal.timeout(30000),
               headers: { 'User-Agent': 'Mozilla/5.0' }
             });
             isValid = r.ok;
