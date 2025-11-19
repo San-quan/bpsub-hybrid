@@ -1,0 +1,23 @@
+museStarlinkpay71/
+├── src/
+│   ├── core/
+│   │   ├── routing-engine.js    # 路由策略引擎
+│   │   ├── network-optimizer.js # 网络优化
+│   │   └── failover-manager.js  # 故障转移
+│   ├── services/
+│   │   ├── app-rules.js         # 养号APP规则
+│   │   ├── ip-classifier.js     # IP分类器
+│   │   └── load-balancer.js     # 负载均衡
+│   ├── config/
+│   │   ├── managers/
+│   │   └── schemas/
+│   └── utils/
+├── configs/
+│   ├── openwrt/
+│   ├── routing-rules/
+│   └── app-rules/
+├── scripts/
+│   ├── openwrt-setup/
+│   ├── kernel-updater/
+│   └── network-tester/
+└── docs/

@@ -1,0 +1,35 @@
+museStarlinkpay71/
+├── src/
+│   ├── subscription/          # 订阅转换核心
+│   │   ├── converter.js      # 多格式转换
+│   │   ├── node-manager.js   # 节点管理
+│   │   └── validator.js      # 订阅验证
+│   ├── routing/              # 星链路由优化
+│   │   ├── china-routes.js   # 回国线路
+│   │   ├── app-rules.js      # 养号APP规则
+│   │   └── failover.js       # 故障转移
+│   ├── auth/                 # 访问控制
+│   │   ├── token-auth.js     # Token验证
+│   │   ├── rate-limit.js     # 速率限制
+│   │   └── access-control.js # 访问控制
+│   ├── notification/         # 通知系统
+│   │   ├── telegram-bot.js   # Telegram推送
+│   │   ├── logger.js         # 访问日志
+│   │   └── reporter.js       # 状态报告
+│   └── utils/
+│       ├── ip-classifier.js  # IP分类
+│       ├── health-check.js   # 健康检查
+│       └── crypto-utils.js   # 加密工具
+├── configs/
+│   ├── subscription/
+│   │   ├── formats/          # 订阅格式模板
+│   │   ├── rules/            # ACL规则
+│   │   └── templates/        # 配置模板
+│   └── routing/
+│       ├── china-ips.json    # 中国IP列表
+│       ├── app-domains.json  # 养号APP域名
+│       └── routing-rules.js  # 路由规则
+└── scripts/
+    ├── auto-updater/         # 自动更新
+    ├── health-monitor/       # 健康监控
+    └── backup/               # 配置备份

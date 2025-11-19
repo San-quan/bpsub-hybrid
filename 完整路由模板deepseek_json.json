@@ -1,0 +1,234 @@
+{
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "hybrid",
+    "rules": [
+      // ========== API 服务路由 ==========
+      {
+        "type": "field",
+        "inboundTag": ["api"],
+        "outboundTag": "api"
+      },
+
+      // ========== 广告拦截规则 ==========
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "domain": [
+          "geosite:category-ads-all",
+          "geosite:category-ads-analytics",
+          "regexp:^(.+\\\\.)?ads\\\\.|^(.+\\\\.)?ad\\\\.|^(.+\\\\.)?tracking\\\\.|^analytics\\\\.|^telemetry\\\\.|^spyware\\\\.|^metrics\\\\.|^beacon\\\\.|^adservice\\\\.google\\\\.|^doubleclick\\\\.net$|^googleadservices\\\\.com$|^googlesyndication\\\\.com$|^googletagservices\\\\.com$"
+        ]
+      },
+
+      // ========== 回国线路规则 (china-routes.js) ==========
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:cn",
+          "geosite:tencent",
+          "geosite:alibaba",
+          "geosite:baidu",
+          "geosite:bytedance",
+          "geosite:xiaomi",
+          "geosite:meituan",
+          "geosite:jd",
+          "geosite:360",
+          "geosite:sina",
+          "geosite:sohu",
+          "geosite:netease",
+          "geosite:ctrip",
+          "geosite:douban",
+          "geosite:iqiyi",
+          "geosite:youku",
+          "geosite:bilibili",
+          "geosite:zhihu",
+          "geosite:tiktok",
+          "geosite:weibo"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:cn",
+          "geoip:private"
+        ]
+      },
+
+      // ========== 养号APP直连规则 (app-rules.js) ==========
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "domain:weixin.qq.com",
+          "domain:qq.com",
+          "domain:wechat.com",
+          "domain:wx.qq.com",
+          "domain:web.wechat.com",
+          "domain:douyin.com",
+          "domain:iesdouyin.com",
+          "domain:snssdk.com",
+          "domain:amemv.com",
+          "domain:weibo.com",
+          "domain:sina.com.cn",
+          "domain:xiaohongshu.com",
+          "domain:xhscdn.com",
+          "domain:redbook.cn",
+          "domain:bilibili.com",
+          "domain:bilivideo.com",
+          "domain:hdslb.com",
+          "domain:acg.tv",
+          "domain:acgvideo.com"
+        ]
+      },
+
+      // ========== 流媒体分流规则 ==========
+      {
+        "type": "field",
+        "outboundTag": "streaming",
+        "domain": [
+          "geosite:netflix",
+          "geosite:disney",
+          "geosite:hbo",
+          "geosite:hulu",
+          "geosite:primevideo",
+          "geosite:spotify",
+          "geosite:appletv",
+          "geosite:youtube",
+          "geosite:youtubemusic",
+          "geosite:abema",
+          "geosite:niconico",
+          "geosite:dazn",
+          "geosite:paramount",
+          "geosite:peacock"
+        ]
+      },
+
+      // ========== 游戏优化规则 ==========
+      {
+        "type": "field",
+        "outboundTag": "gaming",
+        "domain": [
+          "geosite:steam",
+          "geosite:epicgames",
+          "geosite:origin",
+          "geosite:ea",
+          "geosite:activision",
+          "geosite:blizzard",
+          "geosite:battle",
+          "geosite:xbox",
+          "geosite:playstation",
+          "geosite:nintendo",
+          "geosite:discord",
+          "geosite:twitch",
+          "geosite:minecraft"
+        ]
+      },
+
+      // ========== AI服务优化 ==========
+      {
+        "type": "field",
+        "outboundTag": "ai-optimized",
+        "domain": [
+          "geosite:openai",
+          "geosite:chatgpt",
+          "domain:api.openai.com",
+          "domain:platform.openai.com",
+          "domain:chat.openai.com",
+          "domain:claude.ai",
+          "domain:anthropic.com",
+          "domain:gemini.google.com",
+          "domain:deepseek.com",
+          "domain:cohere.com",
+          "domain:perplexity.ai"
+        ]
+      },
+
+      // ========== 开发服务优化 ==========
+      {
+        "type": "field",
+        "outboundTag": "dev-optimized",
+        "domain": [
+          "geosite:github",
+          "geosite:gitlab",
+          "geosite:stackoverflow",
+          "geosite:docker",
+          "geosite:kubernetes",
+          "domain:npmjs.com",
+          "domain:yarnpkg.com",
+          "domain:pypi.org",
+          "domain:rubygems.org",
+          "domain:crates.io",
+          "domain:packagist.org"
+        ]
+      },
+
+      // ========== 故障转移规则 (failover.js) ==========
+      {
+        "type": "field",
+        "balancerTag": "critical-failover",
+        "domain": [
+          "geosite:google",
+          "geosite:gmail",
+          "geosite:google-drive",
+          "geosite:google-docs",
+          "geosite:github",
+          "geosite:openai",
+          "geosite:chatgpt",
+          "geosite:netflix",
+          "geosite:disney"
+        ]
+      },
+      {
+        "type": "field",
+        "balancerTag": "general-failover",
+        "domain": [
+          "geosite:facebook",
+          "geosite:instagram",
+          "geosite:twitter",
+          "geosite:whatsapp",
+          "geosite:telegram",
+          "geosite:discord",
+          "geosite:reddit"
+        ]
+      },
+
+      // ========== 最终回退规则 ==========
+      {
+        "type": "field",
+        "outboundTag": "proxy",
+        "network": "tcp,udp"
+      }
+    ],
+
+    // ========== 负载均衡器配置 ==========
+    "balancers": [
+      {
+        "tag": "critical-failover",
+        "selector": ["primary-critical", "backup-critical", "backup-general"],
+        "strategy": {
+          "type": "leastping",
+          "settings": {
+            "checkInterval": "1m",
+            "timeout": "5s",
+            "failover": true,
+            "fallbackDelay": "10s"
+          }
+        }
+      },
+      {
+        "tag": "general-failover",
+        "selector": ["primary-general", "backup-general", "primary-critical"],
+        "strategy": {
+          "type": "leastload",
+          "settings": {
+            "checkInterval": "2m",
+            "baselines": [100, 150, 200]
+          }
+        }
+      }
+    ]
+  }
+}

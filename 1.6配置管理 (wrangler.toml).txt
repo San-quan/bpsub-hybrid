@@ -1,0 +1,27 @@
+name = "museStarlinkpay71"
+compatibility_date = "2023-10-01"
+
+[vars]
+# 🔐 安全配置
+MAIN_TOKEN = "your_main_token_here"
+GUEST_TOKEN = "auto_generated_guest_token"
+
+# 📱 通知配置
+TELEGRAM_BOT_TOKEN = "your_bot_token"
+TELEGRAM_CHAT_ID = "your_chat_id"
+TG_NOTIFICATION = "1"
+
+# 🌐 网络配置
+SUB_CONVERTER_URL = "https://subapi.cmliussss.net"
+SUB_CONFIG = "ACL4SSR_Online_Full.ini"
+SUB_PROTOCOL = "https"
+
+# 📊 显示配置
+FILE_NAME = "StarLink智能订阅"
+SUB_UPDATE_TIME = "24"
+TRAFFIC_DISPLAY = "999TB"
+
+[kv_namespaces]
+{ binding = "NODES_KV", id = "nodes_data" }
+{ binding = "ACCESS_LOG", id = "access_logs" }
+{ binding = "CONFIG_KV", id = "config_store" }
