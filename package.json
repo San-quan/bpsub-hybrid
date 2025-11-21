@@ -1,0 +1,9 @@
+{
+  "name": "muse-bob",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Reorganized Cloudflare Worker project",
+  "scripts": {
+    "check": "node --check _worker.js || true"
+  }
+}

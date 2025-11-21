@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, chore/*, feature/* ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  syntax:
+    name: Syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run `node --check` on repository JS files
+        run: |
+          echo "Running node --check on tracked .js files..."
+          git ls-files '*.js' | xargs -r -n1 node --check
+
+  wrangler-dry-run:
+    name: Wrangler dry-run
+    runs-on: ubuntu-latest
+    needs: syntax
+    if: ${{ secrets.CF_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Wrangler
+        run: npm install -g wrangler@2
+      - name: Wrangler publish --dry-run
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "Running wrangler publish --dry-run (requires CF API token)."
+          wrangler publish --dry-run
+
+  wrangler-skip-note:
+    name: Wrangler dry-run (skipped)
+    runs-on: ubuntu-latest
+    if: ${{ secrets.CF_API_TOKEN == '' }}
+    steps:
+      - name: Note about missing secret
+        run: |
+          echo "Skipping wrangler dry-run because CF_API_TOKEN secret is not set."
