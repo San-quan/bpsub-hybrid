@@ -419,7 +419,7 @@ export default {
               const decoded = txt.includes('://') ? txt : (txt.trim().length > 0 && btoa(atob(txt.trim())) === txt.trim() ? atob(txt.trim()) : txt);
               merged = merged.concat(decoded.trim().split('\n').filter(l => l));
             }
-          } catch (e) {}
+            } catch (e) { console.warn('fetch converter failed', e); }
         }
       }
 
