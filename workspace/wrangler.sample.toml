@@ -1,0 +1,10 @@
+﻿name = \"muse-bob-worker\"
+main = \"configs/cloudflare_worker.js\"
+compatibility_date = \"2025-11-26\"
+type = \"javascript\"
+workers_dev = true
+account_id = \"\"
+
+[vars]
+# BACKEND_ORIGIN should be set as a secret in CI or via wrangler secrets
+# BACKEND_ORIGIN = \"http://47.243.27.69:25500\"
