@@ -1,0 +1,41 @@
+name: Basic checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint if defined
+        run: |
+          if npm run | grep -q 'lint'; then
+            echo "Running lint..."
+            npm run lint
+          else
+            echo "No lint script defined, skipping lint."
+          fi
+
+      - name: Run tests if defined
+        run: |
+          if npm run | grep -q 'test'; then
+            echo "Running tests..."
+            npm test --if-present
+          else
+            echo "No test script defined, skipping tests."
+          fi
