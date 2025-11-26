@@ -1,7 +1,7 @@
-﻿name: Simple Test
+name: Simple Test
 on:
   push:
-    branches: [ chore/* ]
+    branches: ['chore/*']
 
 jobs:
   test:
