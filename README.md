@@ -64,3 +64,15 @@
 - 防止订阅覆盖
 
 ---
+
+## Repository hygiene
+
+为减小仓库体积并提高可维护性，本仓库已移除 tracked 的 node_modules 目录；依赖请用以下命令在本地安装：
+
+```bash
+npm install
+# 或者
+npm ci
+```
+
+请不要将 node_modules 或运行时产生的日志/临时文件提交到仓库；已添加 .gitignore 以自动忽略常见的构建产物和日志文件。

@@ -1,0 +1,30 @@
+# Node and package
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Build output
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Temporary
+tmp/
+.cache/
+coverage/
