@@ -61,7 +61,16 @@ jobs:
       - name: Wrangler publish (dry-run)
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           BACKEND_ORIGIN: ${{ secrets.BACKEND_ORIGIN }}
           BACKEND_AUTH: ${{ secrets.BACKEND_AUTH }}
         run: |
-          wrangler publish --dry-run --verbose || true
+          # verbose to show more context if something fails
+          # prefer passing account id explicitly to wrangler to avoid account lookup issues
+          if [ -n "$CF_ACCOUNT_ID" ]; then
+            wrangler publish --dry-run --verbose --account-id "$CF_ACCOUNT_ID" || true
+          else
+            echo "CF_ACCOUNT_ID not set; running without explicit account-id"
+            wrangler publish --dry-run --verbose || true
+          fi
+
