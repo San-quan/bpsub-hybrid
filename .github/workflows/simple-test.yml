@@ -1,0 +1,11 @@
+﻿name: Simple Test
+on:
+  push:
+    branches: [ chore/* ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo 'Workflow is working'
