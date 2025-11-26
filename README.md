@@ -63,4 +63,33 @@
 - GitHub版本控制
 - 防止订阅覆盖
 
+## 🧹 Repository Hygiene
+
+### Development Setup
+
+This repository has been cleaned up to remove build artifacts and dependencies from version control:
+
+**Installing Dependencies**
+```bash
+npm install
+```
+
+**Running Tests**
+```bash
+npm test
+```
+
+**Checking Code**
+```bash
+npm run check
+```
+
+### What Changed
+
+- `node_modules/` has been removed from git tracking and added to `.gitignore`
+- Build artifacts and logs are now ignored to keep the repository clean
+- Dependencies must be installed locally using `npm install` before development
+
+See [`.gitignore`](./.gitignore) for the complete list of excluded files and directories.
+
 ---
